@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-countries
+      author: homework6
+      changes:
+        - insert:
+            tableName: countries
+            columns:
+              - column: {name: code, value: "RU"}
+              - column: {name: name_ru, value: "Россия"}
+              - column: {name: name_en, value: "Russia"}
+        - insert:
+            tableName: countries
+            columns:
+              - column: {name: code, value: "US"}
+              - column: {name: name_ru, value: "США"}
+              - column: {name: name_en, value: "United States"}
+
+  - changeSet:
+      id: 002-insert-regions
+      author: homework6
+      changes:
+        - insert:
+            tableName: regions
+            columns:
+              - column: {name: code, value: "77"}
+              - column: {name: name_ru, value: "Москва"}
+              - column: {name: name_en, value: "Moscow"}
+              - column: {name: country_id, valueNumeric: 1}
+        - insert:
+            tableName: regions
+            columns:
+              - column: {name: code, value: "78"}
+              - column: {name: name_ru, value: "Санкт-Петербург"}
+              - column: {name: name_en, value: "Saint Petersburg"}
+              - column: {name: country_id, valueNumeric: 1}
+
+  - changeSet:
+      id: 002-insert-cities
+      author: homework6
+      changes:
+        - insert:
+            tableName: cities
+            columns:
+              - column: {name: code, value: "MOW"}
+              - column: {name: name_ru, value: "Москва"}
+              - column: {name: name_en, value: "Moscow"}
+              - column: {name: population, valueNumeric: 12500000}
+              - column: {name: region_id, valueNumeric: 1}
+        - insert:
+            tableName: cities
+            columns:
+              - column: {name: code, value: "SPB"}
+              - column: {name: name_ru, value: "Санкт-Петербург"}
+              - column: {name: name_en, value: "Saint Petersburg"}
+              - column: {name: population, valueNumeric: 5400000}
+              - column: {name: region_id, valueNumeric: 2}

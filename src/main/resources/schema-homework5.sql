@@ -1,0 +1,29 @@
+DROP TABLE IF EXISTS cities CASCADE;
+DROP TABLE IF EXISTS regions CASCADE;
+DROP TABLE IF EXISTS countries CASCADE;
+
+CREATE TABLE countries (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(10) UNIQUE NOT NULL,
+    name_ru VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE regions (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(10) UNIQUE NOT NULL,
+    name_ru VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    country_id INT,
+    FOREIGN KEY (country_id) REFERENCES countries(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cities (
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(10) UNIQUE NOT NULL,
+    name_ru VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    population BIGINT NOT NULL,
+    region_id INT,
+    FOREIGN KEY (region_id) REFERENCES regions(id) ON DELETE CASCADE
+);
