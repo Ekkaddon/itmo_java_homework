@@ -1,5 +1,7 @@
 package ru.itmo.javaadvanced.homework6.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.javaadvanced.homework6.dto.CityDto;
@@ -8,11 +10,7 @@ import ru.itmo.javaadvanced.homework6.entity.Region;
 import ru.itmo.javaadvanced.homework6.repository.CityRepository;
 import ru.itmo.javaadvanced.homework6.repository.RegionRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
-@Transactional(readOnly = true)
 public class CityService {
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
@@ -45,25 +43,24 @@ public class CityService {
         return toDto(saved);
     }
 
-    public List<CityDto> getAllCities() {
-        return cityRepository.findAll().stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<CityDto> getAllCities(Pageable pageable) {
+        return cityRepository.findAll(pageable).map(this::toDto);
     }
 
+    @Transactional(readOnly = true)
     public CityDto getCityById(Long id) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Город с ID " + id + " не найден"));
         return toDto(city);
     }
 
-    public List<CityDto> getCitiesByRegion(Long regionId) {
+    @Transactional(readOnly = true)
+    public Page<CityDto> getCitiesByRegion(Long regionId, Pageable pageable) {
         if (!regionRepository.existsById(regionId)) {
             throw new IllegalArgumentException("Регион с ID " + regionId + " не найден");
         }
-        return cityRepository.findByRegionId(regionId).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+        return cityRepository.findByRegionId(regionId, pageable).map(this::toDto);
     }
 
     @Transactional

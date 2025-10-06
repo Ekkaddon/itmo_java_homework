@@ -10,7 +10,6 @@ import ru.itmo.javaadvanced.homework5.repository.RegionRepository;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class RegionService {
     private final RegionRepository regionRepository;
     private final CountryRepository countryRepository;
@@ -36,15 +35,18 @@ public class RegionService {
         return regionRepository.save(region);
     }
 
+    @Transactional(readOnly = true)
     public List<Region> getAllRegions() {
         return regionRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Region getRegionById(Long id) {
         return regionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + id + " не найден"));
     }
 
+    @Transactional(readOnly = true)
     public List<Region> getRegionsByCountry(Long countryId) {
         if (!countryRepository.existsById(countryId)) {
             throw new IllegalArgumentException("Страна с ID " + countryId + " не найдена");

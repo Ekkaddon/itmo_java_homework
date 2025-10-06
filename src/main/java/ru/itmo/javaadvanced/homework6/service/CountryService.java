@@ -1,5 +1,7 @@
 package ru.itmo.javaadvanced.homework6.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.javaadvanced.homework6.dto.CountryDto;
@@ -10,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 public class CountryService {
     private final CountryRepository countryRepository;
 
@@ -32,12 +33,12 @@ public class CountryService {
         return toDto(saved);
     }
 
-    public List<CountryDto> getAllCountries() {
-        return countryRepository.findAll().stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<CountryDto> getAllCountries(Pageable pageable) {
+        return countryRepository.findAll(pageable).map(this::toDto);
     }
 
+    @Transactional(readOnly = true)
     public CountryDto getCountryById(Long id) {
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Страна с ID " + id + " не найдена"));

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.itmo.javaadvanced.homework6.dto.RegionDto;
 import ru.itmo.javaadvanced.homework6.entity.Region;
 import ru.itmo.javaadvanced.homework6.repository.CountryRepository;
@@ -58,12 +61,13 @@ class RegionServiceTest {
         Region region2 = new Region();
         region2.setId(2L);
 
-        when(regionRepository.findAll()).thenReturn(Arrays.asList(region1, region2));
+        Page<Region> page = new PageImpl<>(Arrays.asList(region1, region2));
+        when(regionRepository.findAll(any(Pageable.class))).thenReturn(page);
 
-        List<RegionDto> result = regionService.getAllRegions();
+        Page<RegionDto> result = regionService.getAllRegions(Pageable.unpaged());
 
-        assertEquals(2, result.size());
-        verify(regionRepository).findAll();
+        assertEquals(2, result.getContent().size());
+        verify(regionRepository).findAll(any(Pageable.class));
     }
 
     @Test

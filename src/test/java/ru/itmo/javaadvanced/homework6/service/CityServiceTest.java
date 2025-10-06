@@ -5,6 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.itmo.javaadvanced.homework6.dto.CityDto;
 import ru.itmo.javaadvanced.homework6.entity.City;
 import ru.itmo.javaadvanced.homework6.repository.CityRepository;
@@ -70,12 +73,13 @@ class CityServiceTest {
         City city2 = new City();
         city2.setId(2L);
 
-        when(cityRepository.findAll()).thenReturn(Arrays.asList(city1, city2));
+        Page<City> page = new PageImpl<>(Arrays.asList(city1, city2));
+        when(cityRepository.findAll(any(Pageable.class))).thenReturn(page);
 
-        List<CityDto> result = cityService.getAllCities();
+        Page<CityDto> result = cityService.getAllCities(Pageable.unpaged());
 
-        assertEquals(2, result.size());
-        verify(cityRepository).findAll();
+        assertEquals(2, result.getContent().size());
+        verify(cityRepository).findAll(any(Pageable.class));
     }
 
     @Test

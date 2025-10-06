@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.itmo.javaadvanced.homework4.dao.CityDao;
 import ru.itmo.javaadvanced.homework4.dao.RegionDao;
 import ru.itmo.javaadvanced.homework4.entity.City;
-import ru.itmo.javaadvanced.homework4.entity.Region;
 
 import java.util.List;
 
@@ -19,16 +18,13 @@ public class CityService {
     }
 
     public City createCity(String code, String nameRu, String nameEn, Long population, Long regionId) {
-        City existing = cityDao.findByCode(code);
-        if (existing != null) {
+        if (cityDao.findByCode(code).isPresent()) {
             throw new IllegalArgumentException("Город с кодом " + code + " уже существует");
         }
         
         if (regionId != null) {
-            Region region = regionDao.findById(regionId);
-            if (region == null) {
-                throw new IllegalArgumentException("Регион с ID " + regionId + " не найден");
-            }
+            regionDao.findById(regionId)
+                    .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + regionId + " не найден"));
         }
         
         City city = new City(code, nameRu, nameEn, population, regionId);
@@ -40,22 +36,17 @@ public class CityService {
     }
 
     public City getCityById(Long id) {
-        City city = cityDao.findById(id);
-        if (city == null) {
-            throw new IllegalArgumentException("Город с ID " + id + " не найден");
-        }
-        return city;
+        return cityDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Город с ID " + id + " не найден"));
     }
 
     public City getCityByCode(String code) {
-        return cityDao.findByCode(code);
+        return cityDao.findByCode(code).orElse(null);
     }
 
     public List<City> getCitiesByRegion(Long regionId) {
-        Region region = regionDao.findById(regionId);
-        if (region == null) {
-            throw new IllegalArgumentException("Регион с ID " + regionId + " не найден");
-        }
+        regionDao.findById(regionId)
+                .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + regionId + " не найден"));
         return cityDao.findByRegionId(regionId);
     }
 
@@ -75,10 +66,8 @@ public class CityService {
             city.setPopulation(population);
         }
         if (regionId != null) {
-            Region region = regionDao.findById(regionId);
-            if (region == null) {
-                throw new IllegalArgumentException("Регион с ID " + regionId + " не найден");
-            }
+            regionDao.findById(regionId)
+                    .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + regionId + " не найден"));
             city.setRegionId(regionId);
         }
         

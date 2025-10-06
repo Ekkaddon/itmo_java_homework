@@ -10,6 +10,7 @@ import ru.itmo.javaadvanced.homework4.entity.Region;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RegionDao {
@@ -52,14 +53,14 @@ public class RegionDao {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
-    public Region findById(Long id) {
+    public Optional<Region> findById(Long id) {
         String sql = "SELECT * FROM regions WHERE id = ?";
-        return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst().orElse(null);
+        return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst();
     }
 
-    public Region findByCode(String code) {
+    public Optional<Region> findByCode(String code) {
         String sql = "SELECT * FROM regions WHERE code = ?";
-        return jdbcTemplate.query(sql, rowMapper, code).stream().findFirst().orElse(null);
+        return jdbcTemplate.query(sql, rowMapper, code).stream().findFirst();
     }
 
     public void update(Region region) {

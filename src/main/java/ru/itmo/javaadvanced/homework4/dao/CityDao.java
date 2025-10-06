@@ -10,6 +10,7 @@ import ru.itmo.javaadvanced.homework4.entity.City;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CityDao {
@@ -61,14 +62,14 @@ public class CityDao {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
-    public City findById(Long id) {
+    public Optional<City> findById(Long id) {
         String sql = "SELECT * FROM cities WHERE id = ?";
-        return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst().orElse(null);
+        return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst();
     }
 
-    public City findByCode(String code) {
+    public Optional<City> findByCode(String code) {
         String sql = "SELECT * FROM cities WHERE code = ?";
-        return jdbcTemplate.query(sql, rowMapper, code).stream().findFirst().orElse(null);
+        return jdbcTemplate.query(sql, rowMapper, code).stream().findFirst();
     }
 
     public List<City> findByRegionId(Long regionId) {

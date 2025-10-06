@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Главное приложение для вычисления чисел Фибоначчи
  */
-@SpringBootApplication(scanBasePackages = "ru.itmo.javaadvanced.homework3")
+@SpringBootApplication
 public class FibonacciApplication {
 
     public static void main(String[] args) {

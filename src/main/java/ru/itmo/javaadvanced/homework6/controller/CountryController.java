@@ -1,12 +1,13 @@
 package ru.itmo.javaadvanced.homework6.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.javaadvanced.homework6.dto.CountryDto;
 import ru.itmo.javaadvanced.homework6.service.CountryService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/countries")
@@ -25,8 +26,8 @@ public class CountryController {
     }
 
     @GetMapping
-    public List<CountryDto> getAllCountries() {
-        return countryService.getAllCountries();
+    public Page<CountryDto> getAllCountries(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return countryService.getAllCountries(pageable);
     }
 
     @GetMapping("/{id}")

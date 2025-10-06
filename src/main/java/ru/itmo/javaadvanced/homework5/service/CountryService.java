@@ -8,7 +8,6 @@ import ru.itmo.javaadvanced.homework5.repository.CountryRepository;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class CountryService {
     private final CountryRepository countryRepository;
 
@@ -25,15 +24,18 @@ public class CountryService {
         return countryRepository.save(country);
     }
 
+    @Transactional(readOnly = true)
     public List<Country> getAllCountries() {
         return countryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Country getCountryById(Long id) {
         return countryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Страна с ID " + id + " не найдена"));
     }
 
+    @Transactional(readOnly = true)
     public Country getCountryByCode(String code) {
         return countryRepository.findByCode(code).orElse(null);
     }

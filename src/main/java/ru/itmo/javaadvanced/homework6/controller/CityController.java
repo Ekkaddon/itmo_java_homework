@@ -1,12 +1,13 @@
 package ru.itmo.javaadvanced.homework6.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.javaadvanced.homework6.dto.CityDto;
 import ru.itmo.javaadvanced.homework6.service.CityService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/cities")
@@ -25,8 +26,8 @@ public class CityController {
     }
 
     @GetMapping
-    public List<CityDto> getAllCities() {
-        return cityService.getAllCities();
+    public Page<CityDto> getAllCities(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return cityService.getAllCities(pageable);
     }
 
     @GetMapping("/{id}")
@@ -35,8 +36,8 @@ public class CityController {
     }
 
     @GetMapping("/region/{regionId}")
-    public List<CityDto> getCitiesByRegion(@PathVariable Long regionId) {
-        return cityService.getCitiesByRegion(regionId);
+    public Page<CityDto> getCitiesByRegion(@PathVariable Long regionId, @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return cityService.getCitiesByRegion(regionId, pageable);
     }
 
     @PutMapping("/{id}")

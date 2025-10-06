@@ -1,5 +1,7 @@
 package ru.itmo.javaadvanced.homework6.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.javaadvanced.homework6.dto.RegionDto;
@@ -12,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 public class RegionService {
     private final RegionRepository regionRepository;
     private final CountryRepository countryRepository;
@@ -44,25 +45,24 @@ public class RegionService {
         return toDto(saved);
     }
 
-    public List<RegionDto> getAllRegions() {
-        return regionRepository.findAll().stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<RegionDto> getAllRegions(Pageable pageable) {
+        return regionRepository.findAll(pageable).map(this::toDto);
     }
 
+    @Transactional(readOnly = true)
     public RegionDto getRegionById(Long id) {
         Region region = regionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + id + " не найден"));
         return toDto(region);
     }
 
-    public List<RegionDto> getRegionsByCountry(Long countryId) {
+    @Transactional(readOnly = true)
+    public Page<RegionDto> getRegionsByCountry(Long countryId, Pageable pageable) {
         if (!countryRepository.existsById(countryId)) {
             throw new IllegalArgumentException("Страна с ID " + countryId + " не найдена");
         }
-        return regionRepository.findByCountryId(countryId).stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+        return regionRepository.findByCountryId(countryId, pageable).map(this::toDto);
     }
 
     @Transactional

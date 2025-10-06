@@ -15,8 +15,7 @@ public class RegionService {
     }
 
     public Region createRegion(String code, String nameRu, String nameEn) {
-        Region existing = regionDao.findByCode(code);
-        if (existing != null) {
+        if (regionDao.findByCode(code).isPresent()) {
             throw new IllegalArgumentException("Регион с кодом " + code + " уже существует");
         }
         Region region = new Region(code, nameRu, nameEn);
@@ -28,15 +27,12 @@ public class RegionService {
     }
 
     public Region getRegionById(Long id) {
-        Region region = regionDao.findById(id);
-        if (region == null) {
-            throw new IllegalArgumentException("Регион с ID " + id + " не найден");
-        }
-        return region;
+        return regionDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Регион с ID " + id + " не найден"));
     }
 
     public Region getRegionByCode(String code) {
-        return regionDao.findByCode(code);
+        return regionDao.findByCode(code).orElse(null);
     }
 
     public Region updateRegion(Long id, String code, String nameRu, String nameEn) {

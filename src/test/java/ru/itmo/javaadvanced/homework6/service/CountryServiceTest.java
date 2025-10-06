@@ -5,6 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.itmo.javaadvanced.homework6.dto.CountryDto;
 import ru.itmo.javaadvanced.homework6.entity.Country;
 import ru.itmo.javaadvanced.homework6.repository.CountryRepository;
@@ -54,12 +57,13 @@ class CountryServiceTest {
         Country country2 = new Country();
         country2.setId(2L);
 
-        when(countryRepository.findAll()).thenReturn(Arrays.asList(country1, country2));
+        Page<Country> page = new PageImpl<>(Arrays.asList(country1, country2));
+        when(countryRepository.findAll(any(Pageable.class))).thenReturn(page);
 
-        List<CountryDto> result = countryService.getAllCountries();
+        Page<CountryDto> result = countryService.getAllCountries(Pageable.unpaged());
 
-        assertEquals(2, result.size());
-        verify(countryRepository).findAll();
+        assertEquals(2, result.getContent().size());
+        verify(countryRepository).findAll(any(Pageable.class));
     }
 
     @Test

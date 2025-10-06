@@ -1,6 +1,9 @@
 package ru.itmo.javaadvanced.homework6.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.javaadvanced.homework6.dto.RegionDto;
@@ -25,8 +28,8 @@ public class RegionController {
     }
 
     @GetMapping
-    public List<RegionDto> getAllRegions() {
-        return regionService.getAllRegions();
+    public Page<RegionDto> getAllRegions(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return regionService.getAllRegions(pageable);
     }
 
     @GetMapping("/{id}")
@@ -35,8 +38,8 @@ public class RegionController {
     }
 
     @GetMapping("/country/{countryId}")
-    public List<RegionDto> getRegionsByCountry(@PathVariable Long countryId) {
-        return regionService.getRegionsByCountry(countryId);
+    public Page<RegionDto> getRegionsByCountry(@PathVariable Long countryId, @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return regionService.getRegionsByCountry(countryId, pageable);
     }
 
     @PutMapping("/{id}")
