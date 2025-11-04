@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/diploma/changes/001-create-core-tables.yaml
+  - include:
+      file: db/diploma/changes/002-insert-reference-data.yaml
