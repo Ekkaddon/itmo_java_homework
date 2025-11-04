@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres-homework4:
+    image: postgres:15-alpine
+    container_name: homework4_postgres
+    environment:
+      POSTGRES_DB: homework4db
+      POSTGRES_USER: itmo_user
+      POSTGRES_PASSWORD: itmo_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - homework4_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  homework4_postgres_data:
