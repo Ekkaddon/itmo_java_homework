@@ -1,0 +1,158 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-insert-crew-members
+      author: diploma
+      changes:
+        - insert:
+            tableName: crew_members
+            columns:
+              - column: { name: crew_member_type, value: "PILOT" }
+              - column: { name: first_name, value: "Алексей" }
+              - column: { name: last_name, value: "Иванов" }
+              - column: { name: middle_name, value: "Петрович" }
+              - column: { name: email, value: "alexey.ivanov@example.com" }
+              - column: { name: phone_number, value: "+79000000001" }
+              - column: { name: license_number, value: "PILOT-001" }
+              - column: { name: experience_years, valueNumeric: 12 }
+        - insert:
+            tableName: crew_members
+            columns:
+              - column: { name: crew_member_type, value: "FLIGHT_ATTENDANT" }
+              - column: { name: first_name, value: "Мария" }
+              - column: { name: last_name, value: "Смирнова" }
+              - column: { name: middle_name, value: "Игоревна" }
+              - column: { name: email, value: "maria.smirnova@example.com" }
+              - column: { name: phone_number, value: "+79000000002" }
+              - column: { name: license_number, value: "FA-010" }
+              - column: { name: experience_years, valueNumeric: 5 }
+        - insert:
+            tableName: crew_members
+            columns:
+              - column: { name: crew_member_type, value: "DISPATCHER" }
+              - column: { name: first_name, value: "Дмитрий" }
+              - column: { name: last_name, value: "Кузнецов" }
+              - column: { name: middle_name, value: "Алексеевич" }
+              - column: { name: email, value: "dmitry.kuznetsov@example.com" }
+              - column: { name: phone_number, value: "+79000000003" }
+              - column: { name: license_number, value: "DSP-100" }
+              - column: { name: experience_years, valueNumeric: 15 }
+
+  - changeSet:
+      id: 002-insert-aircrafts
+      author: diploma
+      changes:
+        - insert:
+            tableName: aircrafts
+            columns:
+              - column: { name: registration_number, value: "RA-82045" }
+              - column: { name: aircraft_model, value: "Airbus A320" }
+              - column: { name: manufacturing_year, valueNumeric: 2015 }
+              - column: { name: seating_capacity, valueNumeric: 180 }
+              - column: { name: cargo_capacity_kg, valueNumeric: 15000 }
+        - insert:
+            tableName: aircrafts
+            columns:
+              - column: { name: registration_number, value: "RA-96012" }
+              - column: { name: aircraft_model, value: "Boeing 737" }
+              - column: { name: manufacturing_year, valueNumeric: 2018 }
+              - column: { name: seating_capacity, valueNumeric: 160 }
+              - column: { name: cargo_capacity_kg, valueNumeric: 14000 }
+
+  - changeSet:
+      id: 003-insert-flights
+      author: diploma
+      changes:
+        - insert:
+            tableName: flights
+            columns:
+              - column: { name: flight_number, value: "SU1001" }
+              - column: { name: origin_city, value: "Москва" }
+              - column: { name: destination_city, value: "Санкт-Петербург" }
+              - column: { name: scheduled_departure, value: "2025-11-10T08:30:00+03:00" }
+              - column: { name: scheduled_arrival, value: "2025-11-10T10:00:00+03:00" }
+              - column: { name: aircraft_id, valueNumeric: 1 }
+              - column: { name: planned_payload_kg, valueNumeric: 8000 }
+        - insert:
+            tableName: flights
+            columns:
+              - column: { name: flight_number, value: "SU2002" }
+              - column: { name: origin_city, value: "Москва" }
+              - column: { name: destination_city, value: "Калининград" }
+              - column: { name: scheduled_departure, value: "2025-11-11T12:00:00+03:00" }
+              - column: { name: scheduled_arrival, value: "2025-11-11T14:30:00+03:00" }
+              - column: { name: aircraft_id, valueNumeric: 2 }
+              - column: { name: planned_payload_kg, valueNumeric: 9000 }
+
+  - changeSet:
+      id: 004-insert-flight-crews
+      author: diploma
+      changes:
+        - insert:
+            tableName: flight_crews
+            columns:
+              - column: { name: flight_id, valueNumeric: 1 }
+              - column: { name: crew_member_id, valueNumeric: 1 }
+              - column: { name: crew_role, value: "CAPTAIN" }
+        - insert:
+            tableName: flight_crews
+            columns:
+              - column: { name: flight_id, valueNumeric: 1 }
+              - column: { name: crew_member_id, valueNumeric: 2 }
+              - column: { name: crew_role, value: "FLIGHT_ATTENDANT" }
+        - insert:
+            tableName: flight_crews
+            columns:
+              - column: { name: flight_id, valueNumeric: 2 }
+              - column: { name: crew_member_id, valueNumeric: 1 }
+              - column: { name: crew_role, value: "CAPTAIN" }
+        - insert:
+            tableName: flight_crews
+            columns:
+              - column: { name: flight_id, valueNumeric: 2 }
+              - column: { name: crew_member_id, valueNumeric: 2 }
+              - column: { name: crew_role, value: "FLIGHT_ATTENDANT" }
+
+  - changeSet:
+      id: 005-insert-news
+      author: diploma
+      changes:
+        - insert:
+            tableName: news
+            columns:
+              - column: { name: title, value: "Обновлен регламент безопасности" }
+              - column: { name: content, value: "Просим всех ознакомиться с новым регламентом безопасности полетов." }
+              - column: { name: author_id, valueNumeric: 3 }
+              - column: { name: published_at, value: "2025-11-01T09:00:00+03:00" }
+        - insert:
+            tableName: news
+            columns:
+              - column: { name: title, value: "Плановое техобслуживание" }
+              - column: { name: content, value: "Самолет RA-82045 будет недоступен 12 ноября для планового ТО." }
+              - column: { name: author_id, valueNumeric: 3 }
+              - column: { name: published_at, value: "2025-11-03T10:30:00+03:00" }
+
+  - changeSet:
+      id: 006-insert-users
+      author: diploma
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: username, value: "dispatcher" }
+              - column: { name: password_hash, value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG" }
+              - column: { name: role, value: "DISPATCHER" }
+              - column: { name: crew_member_id, valueNumeric: 3 }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: username, value: "pilot" }
+              - column: { name: password_hash, value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG" }
+              - column: { name: role, value: "PILOT" }
+              - column: { name: crew_member_id, valueNumeric: 1 }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: username, value: "attendant" }
+              - column: { name: password_hash, value: "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG" }
+              - column: { name: role, value: "FLIGHT_ATTENDANT" }
+              - column: { name: crew_member_id, valueNumeric: 2 }

@@ -1,0 +1,260 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-crew-members-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: crew_members
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: crew_member_type
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: email
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: phone_number
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: license_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: experience_years
+                  type: int
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 002-create-aircrafts-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: aircrafts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: registration_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: aircraft_model
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manufacturing_year
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: seating_capacity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cargo_capacity_kg
+                  type: int
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 003-create-flights-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: flights
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: flight_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: origin_city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: destination_city
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scheduled_departure
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scheduled_arrival
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: aircraft_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_flights_aircraft
+                    references: aircrafts(id)
+              - column:
+                  name: planned_payload_kg
+                  type: int
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 004-create-flight-crew-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: flight_crews
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: flight_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_flight_crews_flight
+                    references: flights(id)
+              - column:
+                  name: crew_member_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_flight_crews_member
+                    references: crew_members(id)
+              - column:
+                  name: crew_role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 005-create-news-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: news
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_news_author
+                    references: crew_members(id)
+              - column:
+                  name: published_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 006-create-users-table
+      author: diploma
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password_hash
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: crew_member_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_users_crew_member
+                    references: crew_members(id)
