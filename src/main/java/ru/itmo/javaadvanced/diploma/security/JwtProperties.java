@@ -9,7 +9,10 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app.security.jwt")
 @Validated
 public record JwtProperties(
-        @NotBlank String secret,
-        @NotNull @Positive Integer accessTokenTtlMinutes
+        @NotBlank
+        String secret,
+        @NotNull
+        @Positive
+        Integer accessTokenTtlMinutes
 ) {
 }
